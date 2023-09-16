@@ -23,8 +23,29 @@ const getAllUsers =async (): Promise<Partial<User>[]> => {
     return users;
   };
 
+  
+// Get user by id service
+const getUserById = async (userId: string): Promise<Partial<User> | null> => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      role: true,
+      contactNo: true,
+      address: true,
+      profileImg: true,
+    },
+  });
+  return user;
+};
+
   export const userService = {
     getAllUsers,
+    getUserById
 
 };
 
