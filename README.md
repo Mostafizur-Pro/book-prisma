@@ -9,12 +9,12 @@ This is a backend for a book catalog application. It is built to implement CRUD 
 - [x] Postgres
 - [x] JWT
 - [x] Bcrypt
-
+<!-- 
 ## Entity Relationship Diagram
 
 <p>
 <img src="./ERD.png" align="center" width="100%" height="100%" style="border-radius: 30px;">
-</p>
+</p> -->
 
 ### This is a link to the backend API hosted on vercel [Live Site](https://book-bd.vercel.app//)
 
