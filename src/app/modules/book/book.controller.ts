@@ -4,6 +4,7 @@ import { BookService } from "./book.service";
 import catchAsync from "../../../shared/catchAsync";
 import { Request, Response } from "express";
 import ApiError from "../../../errors/ApiError";
+import { Book } from "@prisma/client";
 
 const getAllBooks = catchAsync(async (req: Request, res: Response)=> {
     const queryPayload = req.query;
@@ -32,13 +33,13 @@ const getBookByCategoryId = catchAsync(async (req: Request, res: Response)=> {
 
 const getBookById = catchAsync(async (req: Request, res: Response)=> {
     const id = req.params.id;
-    const book = await BookService.getBookById(id);
+    const result = await BookService.getBookById(id);
 
     sendResponse( res, {
         statusCode: httpStatus.OK,
         success: true,
         message: "Book fetched successfully by Book ID",
-        data: book
+        data: result
     });
 });
 
@@ -56,19 +57,32 @@ const createBook = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updateBookById = catchAsync(async (req: Request, res: Response)=> {
-    const id = req.params.id;
+// const updateBookById = catchAsync(async (req: Request, res: Response)=> {
+//     const id = req.params.id;
+//     const payload = req.body;
+
+//     const result = await BookService.updateBookById(id, payload);
+    
+
+//     sendResponse( res, {
+//         statusCode: httpStatus.OK,
+//         success: true,
+//         message: "Book updated successfully",
+//         data: result
+//     });
+// });
+const updateBookById = catchAsync(async (req: Request, res: Response) => {
+    const { id } = req.params;
     const payload = req.body;
-
-    const updatedBook = await BookService.updateBookById(id, payload);
-
-    sendResponse( res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "Book updated successfully",
-        data: updatedBook
+  
+    const result = await BookService.updateBookById(id, payload);
+    sendResponse<Book>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "book updated successfully",
+      data: result,
     });
-});
+  });
 
 const deleteBookById = catchAsync(async (req: Request, res: Response)=> {
     const id = req.params.id;

@@ -17,7 +17,7 @@ const signupValidation = z.object({
       .string({
         required_error: 'Password is required',
       })
-      .min(6)
+      .min(4)
       .max(255),
     role: z.enum(['user', 'admin', 'customer'], {
       required_error: 'Role is required',

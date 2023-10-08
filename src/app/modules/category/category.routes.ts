@@ -15,13 +15,11 @@ router.get('/:id', CategoryController.getCategoryById);
 router.patch(
     '/:id',
     ValidateRequest(CategoryValidation.zodValidation),
-
     CategoryController.updateCategoryById
 );
 router.delete(
     '/:id',
-    ValidateRequest(CategoryValidation.zodValidation),
-    CategoryController.deleteCategoryById
+        CategoryController.deleteCategoryById
 );
 
 export const categoryRoutes = router;

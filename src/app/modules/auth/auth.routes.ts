@@ -11,7 +11,7 @@ ValidateRequest(authValidation.signupValidation),
 authController.signupUser);
 
 router.post('/signin',
-ValidateRequest(authValidation.signupValidation),
+ValidateRequest(authValidation.loginValidation),
 authController.loginUser);
 
 

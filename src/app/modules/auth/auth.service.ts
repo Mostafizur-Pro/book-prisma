@@ -2,6 +2,10 @@ import { User } from "@prisma/client";
 import prisma from "../../../shared/prisma";
 import ApiError from "../../../errors/ApiError";
 import httpStatus from "http-status";
+import { jwtHelpers } from "../../../helpers/jwtHelpers";
+import config from "../../../config";
+import { hashPasswordHelper } from "../../../helpers/hashPassword";
+import { ILoginResponse } from "./auth.interface";
 
 // Create user in database
 const signupUser = async (payload: User): Promise<Partial<User>> => {
@@ -35,29 +39,44 @@ const signupUser = async (payload: User): Promise<Partial<User>> => {
 
 
 // Login user
-const loginUser = async (payload: User): Promise<string> => {
-    // Handle if user already not exist
-    const isUserExist = await prisma.user.findFirst({
-      where: {
-        email: payload.email,
-      },
-    });
-    if (!isUserExist) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'User not exist');
-    }
-    // Compare password
-    // const isPasswordMatch = await hashPasswordHelper.comparePassword(
-    //   payload.password,
-    //   isUserExist.password
-    // );
-    // if (!isPasswordMatch) {
-    //   throw new ApiError(httpStatus.BAD_REQUEST, 'Password not match');
-    // }
-  
-    // Return a success message (you can customize this message)
-    return 'Login successful';
+const loginUser = async (payload: User): Promise<ILoginResponse> => {
+  // Handle if user already not exist
+  const isUserExist = await prisma.user.findFirst({
+    where: {
+      email: payload.email,
+    },
+  });
+  const hi = isUserExist?.password
+ 
+  if (!isUserExist) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User not exist');
+  }
+  // Compare password
+  // const isPasswordMatch = await hashPasswordHelper.comparePassword(
+  //   payload.password,
+  //   isUserExist.password
+  // );
+  // console.log("isPasswordMatch", isPasswordMatch)
+  // if (!isPasswordMatch) {
+  //   throw new ApiError(httpStatus.BAD_REQUEST, 'Password not match');
+  // }
+  // Generate token
+  const token = await jwtHelpers.createToken(
+    {
+      userId: isUserExist.id,
+      role: isUserExist.role,
+    },
+    config.jwt.secret as string,
+    config.jwt.expires_in as string
+  );
+  // Check decodedToken
+  // const decodedToken = await jwtHelpers.verifyToken(token, config.jwt.secret as string);
+  // console.log(decodedToken);
+
+  return {
+    token,
   };
-  
+};
 
 
 

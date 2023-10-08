@@ -84,22 +84,26 @@ const updateUserById = async (userId: string, payload: Partial<User>): Promise<P
 };
 
 // Define user by id
-const deleteUserById = (userId: string): Promise<Partial<User>> => {
-  const user = prisma.user.delete({
+const deleteUserById = async(id: string): Promise<Partial<User | null>> => {
+  
+  const result = await prisma.user.delete({
     where: {
-      id: userId,
+      id,
     },
     select: {
       id: true,
-      email: true,
       name: true,
+      email: true,
       role: true,
       contactNo: true,
       address: true,
       profileImg: true,
+      createdAt: true,
+      updatedAt: true,
     },
   });
-  return user;
+
+  return result;
 };
 
   export const userService = {

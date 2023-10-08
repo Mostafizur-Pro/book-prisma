@@ -13,7 +13,7 @@ router.post("/create-book",
 ValidateRequest( BookValidation.postValidation ),
 BookController.createBook);
 router.patch("/:id", 
-ValidateRequest( BookValidation.postValidation ),
+ValidateRequest( BookValidation.updateValidation ),
 BookController.updateBookById);
 router.delete("/:id", BookController.deleteBookById);
 

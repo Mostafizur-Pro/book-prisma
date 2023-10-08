@@ -40,12 +40,12 @@ const updateUserById = catchAsync(async (req: Request, res: Response) => {
 
 const deleteUserById = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const deletedUser = await userService.deleteUserById(id);
+  const result = await userService.deleteUserById(id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'User deleted successfully',
-    data: deletedUser,
+    data: result,
   });
 });
 
