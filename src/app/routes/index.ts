@@ -23,10 +23,10 @@ const moduleRoutes = [
       path: '/profile',
       routes: userRoutes,
     },
-    {
-      path: '/profile',
-      routes: profileRoutes,
-    },
+    // {
+    //   path: '/profile',
+    //   routes: profileRoutes,
+    // },
     {
       path: '/categories',
       routes: categoryRoutes,

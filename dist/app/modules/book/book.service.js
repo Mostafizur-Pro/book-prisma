@@ -90,15 +90,16 @@ const getBookByCategoryId = (id) => __awaiter(void 0, void 0, void 0, function* 
     return book;
 });
 const getBookById = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const book = yield prisma_1.default.book.findUnique({
+    const result = yield prisma_1.default.book.findUnique({
         where: {
             id,
         },
+        include: {
+            category: true,
+            // reviews: true,
+        },
     });
-    if (!book) {
-        throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, 'Book not found');
-    }
-    return book;
+    return result;
 });
 const createBook = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const isExist = yield prisma_1.default.book.findFirst({
@@ -117,25 +118,32 @@ const createBook = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     });
     return book;
 });
+// const updateBookById = async (id: string, payload: Partial<Book>): Promise<Book | null> => {
+//   const result = await prisma.book.update({
+//     where: {
+//       id,
+//     },
+//     data: payload,
+//     include: {
+//       category: true,
+//       // reviews: true,
+//     },
+//   });
+//   console.log('result', result)
+//   return result;
+// };
 const updateBookById = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const isExist = yield prisma_1.default.book.findFirst({
-        where: {
-            title: payload.title,
-        },
-    });
-    if (isExist) {
-        throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, 'Book already exist');
-    }
-    const book = yield prisma_1.default.book.update({
+    const result = yield prisma_1.default.book.update({
         where: {
             id,
         },
         data: payload,
         include: {
             category: true,
+            // reviews: true,
         },
     });
-    return book;
+    return result;
 });
 const deleteBookById = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const book = yield prisma_1.default.book.delete({

@@ -15,9 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderService = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
-const prisma_1 = __importDefault(require("../../../shared/prisma"));
-const jwtHelpers_1 = require("../../../helpers/jwtHelpers");
 const asyncForEach_1 = require("../../../helpers/asyncForEach");
+const jwtHelpers_1 = require("../../../helpers/jwtHelpers");
+const prisma_1 = __importDefault(require("../../../shared/prisma"));
 // Get: getOrders - get all orders for Admin and Customer who made the order 
 const getAllOrders = (token) => __awaiter(void 0, void 0, void 0, function* () {
     const decodedToken = jwtHelpers_1.jwtHelpers.verifyToken(token, process.env.JWT_SECRET);

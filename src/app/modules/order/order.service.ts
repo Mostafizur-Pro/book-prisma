@@ -1,16 +1,17 @@
+
 import { Order, OrderedBook } from "@prisma/client";
+import { jwtHelpers } from "../../../helpers/jwtHelpers";
+import prisma from "../../../shared/prisma";
 import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiError";
-import prisma from "../../../shared/prisma";
-import { jwtHelpers } from "../../../helpers/jwtHelpers";
+import { TOrder } from "./orderedBook.interface";
 import { AsyncForEach } from "../../../helpers/asyncForEach";
-import { TOrder } from "./order.Interface";
 
 // Get: getOrders - get all orders for Admin and Customer who made the order 
 const getAllOrders = async (token:string):Promise<Order[] | undefined> => {
     const decodedToken = jwtHelpers.verifyToken(
         token,
-        process.env.JWT_SECRET as string
+        'very-very-secret'
     );
 
     if (decodedToken.role === 'admin') {
@@ -72,8 +73,9 @@ const getOrderById = async (token:string, orderId: string):Promise<Order | undef
 const createOrder = async (token: string, payload: TOrder):Promise<Order> => {
   const decodedToken = jwtHelpers.verifyToken(
     token,
-    process.env.JWT_SECRET as string
+    'very-very-secret'
   );
+  console.log('result', decodedToken)
   const { orderedBooks } = payload;
 //   check if the user already has an order with same books in orderedBooks
     const userOrders = await prisma.order.findMany({
@@ -84,6 +86,7 @@ const createOrder = async (token: string, payload: TOrder):Promise<Order> => {
             orderedBooks: true,
         },
     });
+  
     const userOrderWithSameBooks = userOrders.find((order) => {
         const orderedBooksIds = order.orderedBooks.map((orderedBook) => orderedBook.bookId);
         const payloadBooksIds = orderedBooks.map((orderedBook) => orderedBook.bookId);

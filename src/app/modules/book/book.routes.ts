@@ -10,10 +10,10 @@ router.get('/', BookController.getAllBooks);
 router.get('/:id', BookController.getBookByCategoryId);
 router.get('/:id', BookController.getBookById);
 router.post("/create-book", 
-ValidateRequest( BookValidation.postValidation ),
+// ValidateRequest( BookValidation.postValidation ),
 BookController.createBook);
 router.patch("/:id", 
-ValidateRequest( BookValidation.updateValidation ),
+// ValidateRequest( BookValidation.updateValidation ),
 BookController.updateBookById);
 router.delete("/:id", BookController.deleteBookById);
 

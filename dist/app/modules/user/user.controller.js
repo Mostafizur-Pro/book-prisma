@@ -49,12 +49,12 @@ const updateUserById = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
 }));
 const deleteUserById = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const deletedUser = yield user_service_1.userService.deleteUserById(id);
+    const result = yield user_service_1.userService.deleteUserById(id);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
         message: 'User deleted successfully',
-        data: deletedUser,
+        data: result,
     });
 }));
 exports.userController = {

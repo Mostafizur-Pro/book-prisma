@@ -88,23 +88,25 @@ const updateUserById = (userId, payload) => __awaiter(void 0, void 0, void 0, fu
     return user;
 });
 // Define user by id
-const deleteUserById = (userId) => {
-    const user = prisma_1.default.user.delete({
+const deleteUserById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.default.user.delete({
         where: {
-            id: userId,
+            id,
         },
         select: {
             id: true,
-            email: true,
             name: true,
+            email: true,
             role: true,
             contactNo: true,
             address: true,
             profileImg: true,
+            createdAt: true,
+            updatedAt: true,
         },
     });
-    return user;
-};
+    return result;
+});
 exports.userService = {
     getAllUsers,
     getUserById,

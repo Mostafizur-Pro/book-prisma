@@ -2,12 +2,13 @@ import { Request, Response } from "express";
 import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import httpStatus from "http-status";
-import { Review, User } from "@prisma/client";
+
 import { reviewService } from "./review.service";
+import { ReviewAndRating } from "@prisma/client";
 
 const createReview = catchAsync(async (req: Request, res: Response) => {
   const result = await reviewService.createReview(req.body);
-  sendResponse<Review>(res, {
+  sendResponse<ReviewAndRating>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "review created successfully",
@@ -17,7 +18,7 @@ const createReview = catchAsync(async (req: Request, res: Response) => {
 
 const getAllReview = catchAsync(async (req: Request, res: Response) => {
   const result = await reviewService.getAllReview();
-  sendResponse<Review[]>(res, {
+  sendResponse<ReviewAndRating[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "reviews received successfully",
@@ -28,7 +29,7 @@ const getAllReview = catchAsync(async (req: Request, res: Response) => {
 const getSingleReviews = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await reviewService.getSingleReview(id);
-  sendResponse<Review>(res, {
+  sendResponse<ReviewAndRating>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "review received successfully",
@@ -39,7 +40,7 @@ const getSingleReviews = catchAsync(async (req: Request, res: Response) => {
 const deleteReview = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await reviewService.deleteReview(id);
-  sendResponse<Review>(res, {
+  sendResponse<ReviewAndRating>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "review delete successfully",
@@ -52,7 +53,7 @@ const updateReview = catchAsync(async (req: Request, res: Response) => {
 
   const result = await reviewService.updateReview(id, req.body);
 
-  sendResponse<Review>(res, {
+  sendResponse<ReviewAndRating>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "review updated successfully",

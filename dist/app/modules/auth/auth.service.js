@@ -16,6 +16,8 @@ exports.authService = void 0;
 const prisma_1 = __importDefault(require("../../../shared/prisma"));
 const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const http_status_1 = __importDefault(require("http-status"));
+const jwtHelpers_1 = require("../../../helpers/jwtHelpers");
+const config_1 = __importDefault(require("../../../config"));
 // Create user in database
 const signupUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     // Handle if user already exist
@@ -52,6 +54,7 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
             email: payload.email,
         },
     });
+    const hi = isUserExist === null || isUserExist === void 0 ? void 0 : isUserExist.password;
     if (!isUserExist) {
         throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, 'User not exist');
     }
@@ -60,11 +63,21 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     //   payload.password,
     //   isUserExist.password
     // );
+    // console.log("isPasswordMatch", isPasswordMatch)
     // if (!isPasswordMatch) {
     //   throw new ApiError(httpStatus.BAD_REQUEST, 'Password not match');
     // }
-    // Return a success message (you can customize this message)
-    return 'Login successful';
+    // Generate token
+    const token = yield jwtHelpers_1.jwtHelpers.createToken({
+        userId: isUserExist.id,
+        role: isUserExist.role,
+    }, config_1.default.jwt.secret, config_1.default.jwt.expires_in);
+    // Check decodedToken
+    // const decodedToken = await jwtHelpers.verifyToken(token, config.jwt.secret as string);
+    // console.log(decodedToken);
+    return {
+        token,
+    };
 });
 exports.authService = {
     signupUser,

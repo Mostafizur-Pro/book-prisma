@@ -1,9 +1,10 @@
 import prisma from "../../../shared/prisma";
 import ApiError from "../../../errors/ApiError";
 import httpStatus from "http-status";
-import { Review, User } from "@prisma/client";
+import { ReviewAndRating } from "@prisma/client";
+// import { Review, User } from "@prisma/client";
 
-const createReview = async (data: Review): Promise<Review> => {
+const createReview = async (data: ReviewAndRating): Promise<ReviewAndRating> => {
   const { rating } = data;
 
   if (rating < 1 || rating > 5) {
@@ -13,7 +14,7 @@ const createReview = async (data: Review): Promise<Review> => {
     );
   }
 
-  const result = await prisma.review.create({
+  const result = await prisma.reviewAndRating.create({
     data,
     include: {
       book: true,
@@ -23,8 +24,8 @@ const createReview = async (data: Review): Promise<Review> => {
   return result;
 };
 
-const getAllReview = async (): Promise<Review[]> => {
-  const result = await prisma.review.findMany({
+const getAllReview = async (): Promise<ReviewAndRating[]> => {
+  const result = await prisma.reviewAndRating.findMany({
     include: {
       user: true,
       book: true,
@@ -35,7 +36,7 @@ const getAllReview = async (): Promise<Review[]> => {
 };
 
 const getSingleReview = async (id: string) => {
-  const result = await prisma.review.findUnique({
+  const result = await prisma.reviewAndRating.findUnique({
     where: {
       id,
     },
@@ -48,8 +49,8 @@ const getSingleReview = async (id: string) => {
   return result;
 };
 
-const deleteReview = async (id: string): Promise<Review> => {
-  const result = await prisma.review.delete({
+const deleteReview = async (id: string): Promise<ReviewAndRating> => {
+  const result = await prisma.reviewAndRating.delete({
     where: {
       id,
     },
@@ -64,9 +65,9 @@ const deleteReview = async (id: string): Promise<Review> => {
 
 const updateReview = async (
   id: string,
-  data: Partial<Review>
-): Promise<Review> => {
-  const result = await prisma.review.update({
+  data: Partial<ReviewAndRating>
+): Promise<ReviewAndRating> => {
+  const result = await prisma.reviewAndRating.update({
     where: {
       id,
     },
